@@ -91,11 +91,14 @@
 .zs_info_b:hover{background: #ff1347;}
 
 .m_l_iul{display: block;}
-.m_l_ili{display: block;width: 19%;height: 200px;float:left;
+.m_l_ili{display: block;width: 19%;height: 266px;float:left;
     border:2px solid #000;border-radius: 5px;background: #fff;
 }
 
+.m_l_pic{ width:176px;height:171px; display: inline-block; *display: inline; zoom:1; position: relative;}
 
+.m_l_pic img{ width: 176px;}
+.m_l_pic .b{ width:70px; height:18px; position: absolute; top:0; left:0; background:url("../images/icon.jpg") no-repeat; font-size: 14px; color:#ff0000; }
 
 
 

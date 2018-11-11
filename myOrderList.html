@@ -5,45 +5,6 @@
     <title>自助消费系统</title>
     <link href="css/reset.css" type="text/css" rel="stylesheet"/>
     <link href="css/master.css" type="text/css" rel="stylesheet"/>
-    <style>
-        .menu_bar_title.order{ background:url("images/order.png") no-repeat;}
-        .order_box{ width: 98%; margin: 0 auto; overflow: hidden;}
-        .table-bg{ width:98%; margin:0 auto; background:#bfe4ef; border:2px solid #7fcadf; border-top:none; overflow: hidden; }
-        .order_table{width:100%;font-size:24px; margin-top:10px;}
-        .order_table th,
-        .order_table td{padding:20px 5px;font-weight:normal;text-align:center;}
-        .order_table th{background:#0095c0; font-size: 24px; color:#fff;}
-        .order_table .list {border-radius: 6px; -webkit-border-radius: 6px; -moz-border-radius: 6px; }
-        .order_table.info{ width: 100%;  margin-top: 0; font-size: 20px; }
-        .order_table.info tr{ border-bottom:1px dashed #000;}
-        .goods-pic{ display: inline-block; }
-        .goods-pic img{vertical-align: middle;}
-        .goods-pic i{ font-style: normal; margin-left: 10px;}
-        .compute{  width:125px;height:42px;border:1px solid #000; margin: 0 auto;}
-        .minus,.text,.plus{
-            width: 40px;
-            font-size: 24px;
-            line-height: 40px;
-            color: #8e8e8e;
-            background: none;
-            outline: none;
-            float:left;
-            border:none;
-            border-right:1px solid #000;
-            text-align: center;
-
-        }
-
-        .text{ color:#ff0000; font-size: 26px;}
-        .plus{ border-right:none; cursor: pointer;}
-        .minus{ cursor: pointer;}
-        .calculation{float:right; margin-top: 30px; margin-right: 30px; margin-bottom: 30px;}
-        .calculation .all{color:#ff0000; display: inline-block; *display:inline; zoom:1; margin-left: 40px; font-size: 16px;}
-        .calculation .common-btn{ padding: 5px 30px; display: inline-block; *display:inline; zoom:1; margin-left: 10px; font-size:18px; color:#fff; cursor: pointer; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; outline: none;
-            border: none;}
-        .calculation .common-btn.blue{ background: #00a0e9;}
-        .calculation .common-btn.red{ background: #ff0000; }
-    </style>
 </head>
 <body>
 <div class="contain bgnone">
@@ -54,76 +15,120 @@
     <div class="menu_main">
         <div class="order_box">
             <table class="order_table">
-                <colgroup width="24.5%;"></colgroup>
-                <colgroup width="24.5%;"></colgroup>
-                <colgroup width="24.5%;"></colgroup>
-                <colgroup width="24.5%;"></colgroup>
                 <tbody>
                 <tr class="list">
-                    <th>菜品名称</th>
-                    <th>价格</th>
-                    <th>数量</th>
-                    <th>小计</th>
+                    <th colspan="2">菜品名称</th>
+                    <th width="15%">价格</th>
+                    <th width="15%">数量</th>
+                    <th width="15%">小计</th>
                 </tr>
                 </tbody>
             </table>
             <div class="table-bg">
-                <table class="order_table info">
-                    <colgroup width="24.5%;"></colgroup>
-                    <colgroup width="24.5%;"></colgroup>
-                    <colgroup width="24.5%;"></colgroup>
-                    <colgroup width="24.5%;"></colgroup>
-                    <tbody>
-                    <tr>
-                        <td><span class="goods-pic"><img src="images/pic2.jpg"><i>菜包</i></span></td>
-                        <td>¥7.00</td>
-                        <td>
-                            <div class="compute">
-                                <button class="minus">-</button>
-                                <input type="text" class="text" value="1">
-                                <button class="plus">+</button>
-                            </div>
-                        </td>
-                        <td>¥7.00</td>
-                    </tr>
-                    <tr>
-                        <td><span class="goods-pic"><img src="images/pic2.jpg"><i>菜包</i></span></td>
-                        <td>¥7.00</td>
-                        <td>
-                            <div class="compute">
-                                <button class="minus">-</button>
-                                <input type="text" class="text" value="1">
-                                <button class="plus">+</button>
-                            </div>
-                        </td>
-                        <td>¥7.00</td>
-                    </tr>
-                    <tr>
-                        <td><span class="goods-pic"><img src="images/pic2.jpg"><i>菜包</i></span></td>
-                        <td>¥7.00</td>
-                        <td>
-                            <div class="compute">
-                                <button class="minus">-</button>
-                                <input type="text" class="text" value="1">
-                                <button class="plus">+</button>
-                            </div>
-                        </td>
-                        <td>¥7.00</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="orderMain">
+                    <table class="order_table info">
+                        <tbody>
+                        <tr v-for="item in menuList">
+                            <td width="20%">
+                                <span class="goods-pic"><img :src="item.menuPic"></span>
+                            </td>
+                            <td>
+                                <span class="goods_name">{{item.menuName}}</span>
+                            </td>
+                            <td width="15%">¥{{item.price}}</td>
+                            <td width="15%">
+                                <div class="compute">
+                                    <button class="minus" @click="countReduce(item)">-</button>
+                                    <div class="text">{{item.count}}</div>
+                                    <button class="plus" @click="countAdd(item)">+</button>
+                                </div>
+                            </td>
+                            <td width="15%">¥{{item.count*item.price | intFixed}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
                 <div class="calculation">
                     <span class="all">共3个</span>
-                    <span class="all">总计 9.5</span>
+                    <span class="all">总计 ￥{{allPrice | intFixed}}</span>
                     <button class="common-btn blue">确定</button>
                     <button class="common-btn blue">取消</button>
                     <button class="common-btn red">退出</button>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>
+<script src="js/vue.min.js" ></script>
+<script >
+    var vm = new Vue({
+        el:'.menu_main',
+        data:{
+            menuList:[
+                {
+                    menuPic:'./images/pic2.jpg',
+                    menuName:'肉包 菜包 豆沙包',
+                    price:5.2,
+                    count:0,
+                },
+                {
+                    menuPic:'./images/pic2.jpg',
+                    menuName:'肉包 菜包 豆沙包',
+                    price:4.2,
+                    count:0,
+                },
+                {
+                    menuPic:'./images/pic2.jpg',
+                    menuName:'肉包 菜包 豆沙包',
+                    price:6,
+                    count:0,
+                }
+            ],
+            allPrice:0,
+        },
+        filters:{
+            intFixed:function (value){
+                return value.toFixed(2);
+            }
+        },
+        create:function (){
+
+        },
+        methods:{
+            getMenuList:function (){
+                var _this = this;
+                //ajax
+                /*
+                * $.ajax({
+                *   url:'',
+                *   success:function (d){
+                *       _this.menuList = d;
+                *   }
+                * });
+                *
+                * */
+            },
+
+
+            //数量减少
+            countReduce:function (d){
+                var _this = this;
+                d.count --;
+                if(d.count < 0){
+                    d.count = 0;
+                }else{
+                    _this.allPrice = _this.allPrice - d.price;
+                }
+            },
+            //数量增加
+            countAdd:function (d){
+                var _this = this;
+                d.count ++;
+                _this.allPrice = _this.allPrice + d.price;
+            }
+        }
+    });
+</script>
 </body>
 </html>
